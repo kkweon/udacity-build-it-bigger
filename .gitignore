@@ -16,3 +16,6 @@
 /.idea/codeStyles/Project.xml
 /.idea/runConfigurations.xml
 /.idea/vcs.xml
+/joke/joke.iml
+/jokerenderer/jokerenderer.iml
+/backend/build
