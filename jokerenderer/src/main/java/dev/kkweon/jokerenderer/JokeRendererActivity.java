@@ -8,6 +8,7 @@ import dev.kkweon.jokerenderer.databinding.ActivityJokeRendererBinding;
 
 public class JokeRendererActivity extends AppCompatActivity {
 
+    public static final String EXTRA_JOKE_RENDERER_JOKE = "EXTRA_JOKE_RENDERER_JOKE";
     ActivityJokeRendererBinding mActivityJokeRendererBinding;
 
     @Override
@@ -21,12 +22,18 @@ public class JokeRendererActivity extends AppCompatActivity {
     }
 
     private void renderJoke(String joke) {
-        if (joke == null) {
+        if (joke == null || joke.isEmpty()) {
             Toast.makeText(this, getString(R.string.no_joke_available), Toast.LENGTH_SHORT).show();
         }
+
+        mActivityJokeRendererBinding.textViewJoke.setText(joke);
     }
 
     private String getJokeFromIntent(Intent intent) {
-        return null;
+        if (intent == null) {
+            return null;
+        }
+
+        return intent.getStringExtra(EXTRA_JOKE_RENDERER_JOKE);
     }
 }

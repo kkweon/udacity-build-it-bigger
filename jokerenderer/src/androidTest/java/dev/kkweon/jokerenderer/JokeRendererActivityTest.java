@@ -3,11 +3,13 @@ package dev.kkweon.jokerenderer;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
+import android.content.Intent;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 import org.junit.Rule;
@@ -33,5 +35,14 @@ public class JokeRendererActivityTest {
                                                         .getWindow()
                                                         .getDecorView()))))
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testWithIntent() {
+        Intent intent = new Intent();
+        intent.putExtra(JokeRendererActivity.EXTRA_JOKE_RENDERER_JOKE, "Hope Hope");
+        mActivityTestRule.launchActivity(intent);
+
+        onView(withText("Hope Hope")).check(matches(isCompletelyDisplayed()));
     }
 }
