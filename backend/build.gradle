@@ -20,6 +20,12 @@ apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine'
 apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
 
+appengine {
+    deploy {
+        projectId = 'GCLOUD_CONFIG'
+    }
+}
+
 dependencies {
     implementation 'com.google.endpoints:endpoints-framework:2.2.1'
     implementation 'javax.inject:javax.inject:1'
