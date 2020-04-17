@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.kkweon.jokerenderer">
 
-    <application>
-        <activity android:name=".JokeRendererActivity"></activity>
+    <application android:theme="@style/Theme.AppCompat.Light">
+        <activity android:name=".JokeRendererActivity" />
     </application>
 
 </manifest>

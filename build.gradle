@@ -6,17 +6,32 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.google.guava:guava:22.0'
+        classpath 'com.google.guava:guava:24.1-jre'
         classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:3.28.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+
 allprojects {
+    apply plugin: "com.diffplug.gradle.spotless"
+
     repositories {
         jcenter()
         google()
     }
+
+    spotless {
+        java {
+            target '**/*.java'
+            googleJavaFormat('1.1').aosp()
+            removeUnusedImports() // removes any unused imports
+        }
+    }
+
+    build.dependsOn 'spotlessApply'
 }
+
