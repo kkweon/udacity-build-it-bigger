@@ -3,6 +3,7 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import java.util.logging.Logger;
 import javax.inject.Named;
 
 /** An endpoint class we are exposing */
@@ -18,6 +19,8 @@ import javax.inject.Named;
 )
 public class MyEndpoint {
 
+    private static Logger mGlobal = Logger.getGlobal();
+
     /** A simple endpoint method that takes a name and says Hi back */
     @ApiMethod(name = "sayHi")
     public MyBean sayHi(@Named("name") String name) {
@@ -26,4 +29,15 @@ public class MyEndpoint {
 
         return response;
     }
+    //
+    //  @ApiMethod(name = "jokes")
+    //  public JokeResponse getJoke() {
+    //    try {
+    //      return new JokeResponse(JokeFactory.getJoke().get());
+    //    } catch (InterruptedException | ExecutionException e) {
+    //      e.printStackTrace();
+    //      mGlobal.warning("JokeResponse returns InterruptedException");
+    //      return new JokeResponse("ERROR");
+    //    }
+    //  }
 }

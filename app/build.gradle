@@ -44,6 +44,13 @@ android {
     }
 }
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
+}
+
 preBuild.dependsOn 'spotlessApply'
 
 dependencies {

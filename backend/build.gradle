@@ -3,7 +3,7 @@
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.3'
@@ -12,7 +12,11 @@ buildscript {
 }
 
 repositories {
+    maven {
+        url 'https://maven-central.storage.googleapis.com'
+    }
     jcenter()
+    mavenCentral()
 }
 
 apply plugin: 'java'
@@ -28,9 +32,19 @@ appengine {
 
 dependencies {
     implementation 'com.google.endpoints:endpoints-framework:2.2.1'
-    implementation 'javax.inject:javax.inject:1'
+    implementation 'com.google.endpoints:endpoints-management-control-appengine:1.0.12'
+    implementation 'com.google.endpoints:endpoints-framework-auth:1.0.12'
 
-    implementation 'javax.servlet:servlet-api:2.5'
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java-util
+    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.11.4'
+    // https://mvnrepository.com/artifact/io.grpc/grpc-protobuf
+    implementation group: 'io.grpc', name: 'grpc-protobuf', version: '1.28.1'
+    // https://mvnrepository.com/artifact/io.grpc/grpc-stub
+    implementation group: 'io.grpc', name: 'grpc-stub', version: '1.28.1'
+
+    implementation 'javax.inject:javax.inject:1'
+//    implementation 'javax.servlet:servlet-api:2.5'
     implementation 'com.google.api-client:google-api-client:1.30.9'
     implementation 'com.google.http-client:google-http-client-android:1.34.2'
+    implementation project(path: ':joke')
 }
