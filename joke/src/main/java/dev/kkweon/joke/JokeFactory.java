@@ -1,7 +1,17 @@
 package dev.kkweon.joke;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
+
 public class JokeFactory {
-    public static String getJoke() {
-        return "Knock Knock";
+    public static FutureTask<String> getJoke() {
+        return new FutureTask<>(
+                new Callable<String>() {
+                    @Override
+                    public String call() throws Exception {
+                        Thread.sleep(5000);
+                        return "Knock Knock";
+                    }
+                });
     }
 }

@@ -1,37 +1,60 @@
 package dev.kkweon.jokerenderer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.espresso.IdlingResource;
 
-import dev.kkweon.joke.JokeFactory;
 import dev.kkweon.jokerenderer.databinding.ActivityJokeRendererBinding;
+import dev.kkweon.jokerenderer.testutils.SimpleIdlingResource;
 
-public class JokeRendererActivity extends AppCompatActivity {
+public class JokeRendererActivity extends AppCompatActivity implements JokeAsyncTask.OnJokeFetched {
 
-    public static final String EXTRA_JOKE_RENDERER_JOKE = "EXTRA_JOKE_RENDERER_JOKE";
-    ActivityJokeRendererBinding mActivityJokeRendererBinding;
+  ActivityJokeRendererBinding mActivityJokeRendererBinding;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mActivityJokeRendererBinding = ActivityJokeRendererBinding.inflate(getLayoutInflater());
-        setContentView(mActivityJokeRendererBinding.getRoot());
+  @Nullable private SimpleIdlingResource mIdlingResource;
 
-        String joke = getJoke();
-        renderJoke(joke);
+  @Override
+  public void onJoke(String joke) {
+    if (mIdlingResource != null) {
+      mIdlingResource.setIdleState(true);
     }
 
-    private void renderJoke(String joke) {
-        if (joke == null || joke.isEmpty()) {
-            Toast.makeText(this, getString(R.string.no_joke_available), Toast.LENGTH_SHORT).show();
-        }
-
-        mActivityJokeRendererBinding.textViewJoke.setText(joke);
+    if (joke == null || joke.isEmpty()) {
+      Toast.makeText(this, getString(R.string.no_joke_available), Toast.LENGTH_SHORT).show();
     }
 
-    private String getJoke() {
-        return JokeFactory.getJoke();
+    mActivityJokeRendererBinding.textViewJoke.setText(joke);
+  }
+
+  @Override
+  public void onError() {
+    mActivityJokeRendererBinding.textViewJoke.setText(R.string.no_joke_available);
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mActivityJokeRendererBinding = ActivityJokeRendererBinding.inflate(getLayoutInflater());
+    setContentView(mActivityJokeRendererBinding.getRoot());
+
+    if (mIdlingResource != null) {
+      mIdlingResource.setIdleState(false);
     }
+
+    new JokeAsyncTask(this).execute();
+  }
+
+  @VisibleForTesting
+  @NonNull
+  public IdlingResource getIdlingResource() {
+    if (mIdlingResource == null) {
+      mIdlingResource = new SimpleIdlingResource();
+    }
+    return mIdlingResource;
+  }
 }
