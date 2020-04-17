@@ -16,33 +16,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import dev.kkweon.joke.JokeFactory;
+
 @RunWith(AndroidJUnit4.class)
 public class JokeRendererActivityTest {
 
-    @Rule
-    public ActivityTestRule<JokeRendererActivity> mActivityTestRule =
-            new ActivityTestRule<>(JokeRendererActivity.class);
+  @Rule
+  public ActivityTestRule<JokeRendererActivity> mActivityTestRule =
+      new ActivityTestRule<>(JokeRendererActivity.class);
 
-    @Test
-    public void testWithoutIntent() {
-        onView(withText(R.string.no_joke_available))
-                .inRoot(
-                        withDecorView(
-                                not(
-                                        is(
-                                                mActivityTestRule
-                                                        .getActivity()
-                                                        .getWindow()
-                                                        .getDecorView()))))
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testWithIntent() {
-        Intent intent = new Intent();
-        intent.putExtra(JokeRendererActivity.EXTRA_JOKE_RENDERER_JOKE, "Hope Hope");
-        mActivityTestRule.launchActivity(intent);
-
-        onView(withText("Hope Hope")).check(matches(isCompletelyDisplayed()));
-    }
+  @Test
+  public void testJokeRenders() {
+    onView(withText(JokeFactory.getJoke())).check(matches(isCompletelyDisplayed()));
+  }
 }

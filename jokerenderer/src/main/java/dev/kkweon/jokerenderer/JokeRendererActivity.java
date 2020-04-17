@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import dev.kkweon.joke.JokeFactory;
 import dev.kkweon.jokerenderer.databinding.ActivityJokeRendererBinding;
 
 public class JokeRendererActivity extends AppCompatActivity {
@@ -17,7 +19,7 @@ public class JokeRendererActivity extends AppCompatActivity {
         mActivityJokeRendererBinding = ActivityJokeRendererBinding.inflate(getLayoutInflater());
         setContentView(mActivityJokeRendererBinding.getRoot());
 
-        String joke = getJokeFromIntent(getIntent());
+        String joke = getJoke();
         renderJoke(joke);
     }
 
@@ -29,11 +31,7 @@ public class JokeRendererActivity extends AppCompatActivity {
         mActivityJokeRendererBinding.textViewJoke.setText(joke);
     }
 
-    private String getJokeFromIntent(Intent intent) {
-        if (intent == null) {
-            return null;
-        }
-
-        return intent.getStringExtra(EXTRA_JOKE_RENDERER_JOKE);
+    private String getJoke() {
+        return JokeFactory.getJoke();
     }
 }

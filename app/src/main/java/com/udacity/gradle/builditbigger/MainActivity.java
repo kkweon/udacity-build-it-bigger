@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +36,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void tellJoke(View view) {
-        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
-    }
+    public void tellJoke(View view) {}
 }
