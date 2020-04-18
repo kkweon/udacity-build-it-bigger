@@ -1,14 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.3'
-    }
-}
 
 android {
     compileSdkVersion 29
@@ -44,23 +34,12 @@ android {
     }
 }
 
-configurations {
-    all {
-        exclude module: 'httpclient'
-        exclude module: 'commons-logging'
-    }
-}
-
 preBuild.dependsOn 'spotlessApply'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    endpointsServer project(path: ':backend', configuration: 'endpoints')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.gms:play-services-ads:19.0.1'
-    implementation 'com.google.api-client:google-api-client:1.30.9'
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    implementation 'com.google.http-client:google-http-client-android:1.34.2'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -8,8 +8,7 @@ public class JokeFactory {
         return new FutureTask<>(
                 new Callable<String>() {
                     @Override
-                    public String call() throws Exception {
-                        Thread.sleep(5000);
+                    public String call() {
                         return "Knock Knock";
                     }
                 });

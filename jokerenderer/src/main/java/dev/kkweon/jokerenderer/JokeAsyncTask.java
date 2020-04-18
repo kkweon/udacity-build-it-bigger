@@ -2,14 +2,17 @@ package dev.kkweon.jokerenderer;
 
 import android.os.AsyncTask;
 import androidx.annotation.Nullable;
-import dev.kkweon.joke.JokeFactory;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
+import java.io.IOException;
 
 /** Wraps around CompletableFuture because its API is supported only in API level >= 24. */
 class JokeAsyncTask extends AsyncTask<Void, Void, String> {
     @Nullable private OnJokeFetched mCallback;
+    private static MyApi mService =
+            new MyApi.Builder(new NetHttpTransport.Builder().build(), new GsonFactory(), null)
+                    .build();
 
     interface OnJokeFetched {
         void onJoke(String joke);
@@ -17,25 +20,18 @@ class JokeAsyncTask extends AsyncTask<Void, Void, String> {
         void onError();
     }
 
-    public JokeAsyncTask(OnJokeFetched renderJoke) {
-        mCallback = renderJoke;
+    public JokeAsyncTask(@Nullable OnJokeFetched callback) {
+        mCallback = callback;
     }
 
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            FutureTask<String> jokeTask = JokeFactory.getJoke();
-            Executors.newCachedThreadPool().submit(jokeTask);
-            return jokeTask.get();
-        } catch (ExecutionException e) {
+            return mService.jokes().execute().getJoke();
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            return null;
         }
-        if (mCallback != null) {
-            mCallback.onError();
-        }
-        return null;
     }
 
     @Override

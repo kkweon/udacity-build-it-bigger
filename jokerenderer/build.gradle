@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.3'
+    }
+}
 
 android {
     compileSdkVersion 29
@@ -28,11 +39,50 @@ android {
     viewBinding {
         enabled = true
     }
-
 }
+
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
+}
+
+preBuild.dependsOn 'spotlessApply'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    endpointsServer project(path: ":backend", configuration: "endpoints")
+
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.android.gms:play-services-identity:17.0.0'
+    // The following lines implement maven imports as defined at:
+    // https://github.com/googleapis/google-api-java-client/wiki/Setup-Instructions
+    // Add the Google API client library.
+    implementation('com.google.api-client:google-api-client:1.30.9') {
+        // Exclude artifacts that the Android SDK/Runtime provides.
+        exclude(group: 'xpp3', module: 'xpp3')
+        exclude(group: 'org.apache.httpcomponents', module: 'httpclient')
+        exclude(group: 'junit', module: 'junit')
+        exclude(group: 'com.google.android', module: 'android')
+    }
+    // Add the Android extensions for the Google API client library.
+    // This will automatically include play services as long as you have download that library
+    // from the Android SDK manager.
+    // Add the Android extensions for the Google API client library.
+    implementation(group: 'com.google.api-client', name: 'google-api-client-android', version: '1.30.9') {
+        // Exclude play services, since we're not using this yet.
+        exclude(group: 'com.google.android.gms:play-services', module: 'google-play-services')
+    }
+    // The following client libraries make HTTP/JSON on Android easier.
+    // Android extensions for Google HTTP Client.
+    implementation('com.google.http-client:google-http-client-android:1.34.2') {
+        exclude(group: 'com.google.android', module: 'android')
+    }
+    implementation 'com.google.http-client:google-http-client-gson:1.34.2'
+    // This is used by the Google HTTP client library.
+    implementation 'com.google.guava:guava:24.1-jre'
+
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
