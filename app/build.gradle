@@ -45,6 +45,10 @@ android {
             buildConfigField('boolean', 'IS_FREE', 'false')
         }
     }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
 
 preBuild.dependsOn 'spotlessApply'
@@ -63,4 +67,6 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     implementation project(path: ':joke')
     implementation project(path: ':jokerenderer')
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
 }
