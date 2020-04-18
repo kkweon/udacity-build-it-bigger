@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Logger;
-import javax.inject.Named;
 
 /** An endpoint class we are exposing */
 @Api(

@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.udacity.gradle.builditbigger.databinding.FragmentMainBinding;
 import dev.kkweon.jokerenderer.JokeRendererActivity;
@@ -16,6 +18,7 @@ import dev.kkweon.jokerenderer.JokeRendererActivity;
 public class MainActivityFragment extends Fragment {
 
     FragmentMainBinding mFragmentMainBinding;
+    private InterstitialAd mInterstitialAd;
 
     public MainActivityFragment() {}
 
@@ -26,15 +29,41 @@ public class MainActivityFragment extends Fragment {
 
         mFragmentMainBinding.buttonTellJoke.setOnClickListener(this::onButtonClick);
 
-        MobileAds.initialize(getContext());
+        if (isFree()) {
+            MobileAds.initialize(getContext());
 
-        AdView mAdView = mFragmentMainBinding.adView;
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+            AdView mAdView = mFragmentMainBinding.adView;
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+
+            mInterstitialAd = new InterstitialAd(getContext());
+            mInterstitialAd.setAdUnitId(getString(R.string.banner_ad_unit_id));
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        }
         return mFragmentMainBinding.getRoot();
     }
 
+    private boolean isFree() {
+        return BuildConfig.IS_FREE;
+    }
+
     private void onButtonClick(View view) {
+        if (isFree()) {
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(
+                        new AdListener() {
+                            @Override
+                            public void onAdClosed() {
+                                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                                startActivity(new Intent(getContext(), JokeRendererActivity.class));
+                            }
+                        });
+                return;
+            }
+        }
+
+        // Paid version
         startActivity(new Intent(getContext(), JokeRendererActivity.class));
     }
 }

@@ -1,10 +1,12 @@
 package dev.kkweon.jokerenderer;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.espresso.IdlingResource;
 import dev.kkweon.jokerenderer.databinding.ActivityJokeRendererBinding;
@@ -45,6 +47,11 @@ public class JokeRendererActivity extends AppCompatActivity implements JokeAsync
         }
 
         new JokeAsyncTask(this).execute();
+
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @VisibleForTesting
@@ -54,5 +61,14 @@ public class JokeRendererActivity extends AppCompatActivity implements JokeAsync
             mIdlingResource = new SimpleIdlingResource();
         }
         return mIdlingResource;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
