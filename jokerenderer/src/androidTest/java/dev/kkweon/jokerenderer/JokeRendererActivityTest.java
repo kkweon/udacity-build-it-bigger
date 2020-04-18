@@ -10,7 +10,6 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import java.util.concurrent.ExecutionException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class JokeRendererActivityTest {
     }
 
     @Test
-    public void testJokeRenders() throws ExecutionException, InterruptedException {
+    public void testJokeRenders() {
         onView(withId(R.id.text_view_joke))
                 .check(matches(not(withText(R.string.joke_placeholder))));
     }

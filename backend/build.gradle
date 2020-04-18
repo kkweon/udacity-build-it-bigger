@@ -34,16 +34,6 @@ endpointsServer {
 }
 
 
-def s = project(":joke").projectDir.path + "/src/main/resources"
-
-sourceSets {
-    main {
-        resources {
-            srcDirs += s
-        }
-    }
-}
-
 dependencies {
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'com.google.api-client:google-api-client:1.30.9'

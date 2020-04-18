@@ -1,13 +1,13 @@
 package dev.kkweon.joke;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.FutureTask;
-import java.util.stream.Collectors;
 
 public class JokeFactory {
 
@@ -26,9 +26,18 @@ public class JokeFactory {
                 });
     }
 
-    public static List<String> readJokesFromTextFile() throws URISyntaxException, IOException {
-        List<String> jokes =
-                Files.readAllLines(Paths.get(JokeFactory.class.getResource("/jokes.txt").toURI()));
-        return jokes.stream().filter(j -> !j.isEmpty()).collect(Collectors.toList());
+    public static List<String> readJokesFromTextFile() throws IOException {
+        InputStream inputStream = JokeFactory.class.getResourceAsStream("/jokes.txt");
+        //creating an InputStreamReader object
+        InputStreamReader isReader = new InputStreamReader(inputStream);
+        //Creating a BufferedReader object
+        BufferedReader reader = new BufferedReader(isReader);
+
+        List<String> jokes = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jokes.add(line.trim());
+        }
+        return jokes;
     }
 }
