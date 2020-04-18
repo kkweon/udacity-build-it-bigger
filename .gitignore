@@ -10,3 +10,4 @@
 /joke/joke.iml
 /jokerenderer/jokerenderer.iml
 /backend/build
+*.hprof
