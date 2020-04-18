@@ -1,4 +1,5 @@
 # Gradle Multi Project Build including Android
+![Android CI](https://github.com/kkweon/udacity-build-it-bigger/workflows/Android%20CI/badge.svg)
 
 <table>
 <thead>
